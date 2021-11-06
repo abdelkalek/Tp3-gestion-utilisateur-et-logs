@@ -1,13 +1,16 @@
 package com.example.demo.user;
 
+import com.example.demo.groupe.Groupe;
+import com.example.demo.logs.Logs;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +23,10 @@ public class User {
     private Integer id;
     private String name;
     private String email;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Logs> logsUser;
+
+    @ManyToMany
+    @JsonIgnoreProperties("users")
+    private List<Groupe> groupes = new ArrayList<>();
 }

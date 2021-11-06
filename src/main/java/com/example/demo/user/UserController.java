@@ -1,27 +1,29 @@
 package com.example.demo.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping(path = "/user")
 public class UserController {
+
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
+
+    @GetMapping(value = {"/all", "/"})
+    public List<User> getlistUser() {
+        return userService.getUserList();
+    }
+
+    @PostMapping(value = {"/add"})
+    public User creatnewUser(@RequestBody User user) {
+        return userService.add(user);
+    }
 
 
-    @PostMapping(value = "/add")
-    public @ResponseBody String addNewUser (@RequestBody String name, @RequestBody String email ) {
-        User u = new User();
-        u.setName(name);
-        u.setEmail(email);
-        userRepository.save(u);
-        return "Saved";
-    }
-    @GetMapping(path ="/all")
-    public @ResponseBody Iterable<User> getAllUser(){
-        return userRepository.findAll();
-    }
+
 }
